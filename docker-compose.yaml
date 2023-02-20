@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  db:
+    image: kikikita/database
+    container_name: database
+    environment:
+      POSTGRES_DB: docker_app_db
+      POSTGRES_USER: docker_app
+      POSTGRES_PASSWORD: docker_app
+    volumes:
+      - todo_db:/var/lib/postgresql/data
+    networks:
+      - todo_net
+  
+  backend:
+    image: kikikita/backend
+    container_name: backend
+    environment:
+      HOST: database
+      PORT: 5432
+      DB: docker_app_db
+      DB_USERNAME: docker_app
+      DB_PASSWORD: docker_app
+    networks:
+      - todo_net
+    ports:
+      - 8000:8000
+
+volumes:
+  todo_db:
+    name: todo_db
+
+networks:
+  todo_net:
+    name: todo_net
+  
+
+############# Примеры некоторых команд #############
+
+### Добавить запись в БД: 
+#curl -X PUT localhost:8000/api -H 'Content-Type: application/json' -d '{"text":"Kill Bill","status":"active"}'
+
+### Получить записи из БД:
+#curl localhost:8000/api
+
+### Зайти в базу данных для взаимодействия с данными:
+# docker exec -it database psql --username docker_app --dbname docker_app_db
+# Пример запроса: SELECT * FROM app_table;
