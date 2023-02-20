@@ -5,7 +5,7 @@
 Команда запуска:
 - docker-compose up
 
-# Примеры некоторых команд:
+## Примеры некоторых команд:
 
 Добавить запись в Todo List: 
 - curl -X PUT localhost:8000/api -H 'Content-Type: application/json' -d '{"text":"Kill Bill","status":"active"}'
